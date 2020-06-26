@@ -1,7 +1,7 @@
 import { Factory, Seeder } from 'typeorm-seeding'
 import { Connection } from 'typeorm'
-import * as bcrypt from 'bcryptjs';
 import { UserGender, UserRole } from '../../user/enums';
+import { hashPassword } from '../..//auth/utils/util';
 
 export default class CreateUsers implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<any> {
@@ -12,7 +12,7 @@ export default class CreateUsers implements Seeder {
       .values([
         {
           email: 'user@mail.com',
-          password: await bcrypt.hash('8layer***', 10),
+          password: await hashPassword('8layer***'),
           fullname: 'Juan Dela Cruz',
           contact_number: '09092122222',
           date_of_birth: '1950-10-10',

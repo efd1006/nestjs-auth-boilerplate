@@ -2,12 +2,13 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
-import { LoginDTO } from './dto/auth.dto';
+import { LoginDTO, RegisterDTO } from './dto/auth.dto';
 import * as bcrypt from 'bcryptjs'
 import { AuthPayload } from './interfaces/authpayload.interface';
 import { JwtService } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
 import 'dotenv/config'
+import { hashPassword } from './utils/util';
 var refreshTokens = {}
 @Injectable()
 export class AuthService {
@@ -17,6 +18,27 @@ export class AuthService {
     private userRepository: Repository<UserEntity>,
     private jwtService: JwtService
   ) {}
+
+  async register(dto: RegisterDTO) {
+    let user = await this.userRepository.findOne({where: {email: dto.email}})
+    if(user) {
+      throw new HttpException('Email Already Exists.', HttpStatus.BAD_REQUEST)
+    }
+    let hashedPassword = await hashPassword(dto.password)
+    dto = {
+      ...dto,
+      password: hashedPassword
+    }
+
+    user = await this.userRepository.create(dto)
+    await this.userRepository.save(user)
+
+    return {
+      user: user,
+      message: 'User registration Successful.'
+    }
+    
+  }
 
   async login(dto: LoginDTO) {
     const user = await this.userRepository.findOne({where: {email: dto.email}})
@@ -33,6 +55,10 @@ export class AuthService {
       id: user.id
     }
     const token = await this.getTokens(payload)
+    let key = Object.keys(refreshTokens).find(key => refreshTokens[key] === user.id);
+    if(key) {
+      delete refreshTokens[key]
+    }
     refreshTokens[token.refresh_token] = user.id
     return {
       user: user.toJSON(),

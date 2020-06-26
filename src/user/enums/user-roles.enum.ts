@@ -1,0 +1,4 @@
+export enum UserRole {
+  TENANT_ADMIN = "TENANT_ADMIN",
+  PLATFORM_USER = "PLATFORM_USER"
+}

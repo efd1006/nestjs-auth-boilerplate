@@ -3,7 +3,9 @@ import { AuthService } from './auth.service';
 import { LoginDTO, RegisterDTO } from './dto/auth.dto';
 import { ValidationPipe } from 'src/shared/validation.pipe';
 import { Request } from 'express';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -27,6 +29,7 @@ export class AuthController {
   }
 
   @Post('refresh')
+  @ApiBearerAuth()
   async refresh(
     @Req() req: Request
   ) {

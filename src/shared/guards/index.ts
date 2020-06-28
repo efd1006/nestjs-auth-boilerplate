@@ -1,0 +1,1 @@
+export * from './restful-crud-role.guard'

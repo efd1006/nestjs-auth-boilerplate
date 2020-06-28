@@ -6,7 +6,9 @@ import { JwtModule } from '@nestjs/jwt'
 import { PassportModule } from '@nestjs/passport'
 import { UserEntity } from 'src/user/user.entity';
 import 'dotenv/config'
-import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+// import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
+import { JWTStrategy } from './strategies/jwt.strategy';
+import { RedisClientModule } from 'src/shared/module/redis/redis.module';
 
 @Module({
   imports: [
@@ -19,10 +21,11 @@ import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
         expiresIn: process.env.JWT_EXPIRES_IN
       }
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' })
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    RedisClientModule
   ],
   controllers: [AuthController],
-  providers: [AuthService, RefreshTokenStrategy],
-  exports: [PassportModule, RefreshTokenStrategy]
+  providers: [AuthService, JWTStrategy],
+  exports: [PassportModule, JWTStrategy]
 })
 export class AuthModule {}

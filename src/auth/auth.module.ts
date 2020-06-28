@@ -8,6 +8,7 @@ import { UserEntity } from 'src/user/user.entity';
 import 'dotenv/config'
 // import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 import { JWTStrategy } from './strategies/jwt.strategy';
+import { RedisClientModule } from 'src/shared/module/redis/redis.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { JWTStrategy } from './strategies/jwt.strategy';
         expiresIn: process.env.JWT_EXPIRES_IN
       }
     }),
-    PassportModule.register({ defaultStrategy: 'jwt' })
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    RedisClientModule
   ],
   controllers: [AuthController],
   providers: [AuthService, JWTStrategy],

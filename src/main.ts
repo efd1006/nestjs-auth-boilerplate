@@ -2,9 +2,24 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import 'dotenv/config'
+import { ValidationFilter } from './shared/filters/validation.filter';
+import { ValidationPipe, ValidationError } from '@nestjs/common';
+import { ValidationException } from './shared/exceptions/validation.exception';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.useGlobalFilters(
+    new ValidationFilter()
+  )
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    skipMissingProperties: true,
+    exceptionFactory: (errors: ValidationError[]) => {
+      console.log(errors)
+
+      return new ValidationException(errors)
+    }
+  }))
   app.setGlobalPrefix('api')
   if(process.env.ENV == 'DEV') {
     const swaggerOptions = new DocumentBuilder()

@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
+    "@nestjs/config": "^0.5.0",
     "@nestjs/core": "^7.0.0",
     "@nestjs/jwt": "^7.0.0",
     "@nestjs/passport": "^7.0.0",
@@ -41,6 +42,7 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",
     "dotenv": "^8.2.0",
+    "md5": "^2.2.1",
     "moment": "^2.27.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
@@ -68,16 +70,16 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
+    "ioredis": "^4.17.3",
     "jest": "^25.1.0",
+    "nestjs-redis": "^1.2.8",
     "prettier": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4",
-    "nestjs-redis": "^1.2.8",
-    "ioredis": "^4.17.3"
+    "typescript": "^3.7.4"
   },
   "jest": {
     "moduleFileExtensions": [

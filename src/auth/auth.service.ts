@@ -4,6 +4,7 @@ import { UserEntity } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { LoginDTO, RegisterDTO } from './dto/auth.dto';
 import * as bcrypt from 'bcryptjs'
+import * as md5 from 'md5'
 import { AuthPayload } from './interfaces/authpayload.interface';
 import { JwtService } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
@@ -72,7 +73,7 @@ export class AuthService {
     try {
       jwt.verify(refresh_token, process.env.JWT_REFRESH_TOKEN_SECRET)
       const data = jwt.decode(refresh_token)
-      let redis_data = await this.redisClient.getValue(data["id"])
+      let redis_data = await this.redisClient.getValue(md5(data["id"]))
       if(redis_data.value && redis_data.value == refresh_token) {
         const payload: AuthPayload = {
           id: data['id']
@@ -95,7 +96,7 @@ export class AuthService {
     const refresh_token = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET, {expiresIn: '30d'})
     let decoded_refreshtoken = jwt.decode(refresh_token)
     let data: RedisData = {
-      key: payload.id.toString(),
+      key: md5(payload.id),
       value: refresh_token,
       expiration: decoded_refreshtoken['exp']
     }

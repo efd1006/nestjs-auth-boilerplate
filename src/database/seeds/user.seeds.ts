@@ -12,7 +12,7 @@ export default class CreateUsers implements Seeder {
       .values([
         {
           email: 'user@mail.com',
-          password: await hashPassword('8layer***'),
+          password: await hashPassword('password'),
           fullname: 'Juan Dela Cruz',
           contact_number: '09092122222',
           date_of_birth: '1950-10-10',

@@ -1,8 +1,8 @@
 {
-  "name": "api-aksyon-sentral",
+  "name": "nestjstemaplate",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "From Nestjs Boilerplate",
+  "author": "Edmat Diaz",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
